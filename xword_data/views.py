@@ -20,14 +20,14 @@ def xword_drill(request, clue_id=''):
                 return redirect('xword-answer', clue.pk)
             else:
                 message = "Sorry, that was not correct."
-                return render(request, 'xword-drill.html', {'form': form, 'clue':clue, 'clue_id':clue.pk, 'message':message})
+                return redirect('xword-drill', clue_id=clue.pk)
     else:
         form=DrillForm()
     return render(request, 'xword-drill.html', {'form': form, 'clue':clue})
 
 def get_clue(clue_id):
     """Checks if there is a clue_id, if not, gets a random clue"""
-    if not clue_id:
+    if clue_id == '':
         pks = Clue.objects.values_list('pk', flat=True)
         clue_id = choice(pks)
     clue=Clue.objects.get(pk=clue_id)
