@@ -19,6 +19,6 @@ from xword_data import views
 
 urlpatterns = [
     path('', views.xword_drill, name='xword-drill'),
-    path('/<int:clue_id>/', views.xword_drill, name='xword-drill-clue'),
+    path('/<clue_id>/', views.xword_drill, name='xword-drill-clue'),
     path('answer/<clue_id>/', views.xword_answer, name='xword-answer')
 ]
