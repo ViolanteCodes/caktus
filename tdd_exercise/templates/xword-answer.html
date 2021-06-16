@@ -5,4 +5,16 @@
     Congratulations on guessing the following clue:<br>
     "{{clue.clue.clue_text}}" with "{{clue.clue.entry.entry_text}}"
 </div>
+<div>
+    {% if clue.clue_list|length == 1 %}
+        This is the only appearance of this clue.
+    {% else %}
+        <table>
+            <tr><td>Entry</td></tr>
+            {% for item in clue.clue_list %}
+            <tr><td>{{item.entry.entry_text}}</td></tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
 {% endblock %}
