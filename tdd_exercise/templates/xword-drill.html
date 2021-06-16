@@ -3,17 +3,36 @@
 {% block content %}
 
 {% block clue %}
+
+{{clue.pk}}
+
+{% if message %}
+    <div>
+        {{message}}
+    </div>
+{% endif %}
+
 <div>
     <p>{{clue.clue_text}}</p>
 </div>
 {% endblock %}
 
 {% block form %}
-<form action="/your-name/" method="post">
+<div>
+<form method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">
 </form>
+</div>
 {% endblock %}
 
+{% block escape_hatch %}
+<div>
+    <p>
+        {% url 'xword-answer' clue.pk as escape_url %}
+        Or skip to the <a href="{{escape_url}}">escape hatch</a>.
+    </p>
+</div>
+{% endblock %}
 {% endblock %}
