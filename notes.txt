@@ -1,0 +1,1 @@
+django version in original requirements.txt appears to be less than 2.3 not >
