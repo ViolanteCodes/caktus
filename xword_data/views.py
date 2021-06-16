@@ -9,7 +9,7 @@ def xword_drill(request, clue_id=None):
     """Drill View"""
     # call get_clue function
     clue = get_clue(clue_id)
-    form=DrillForm()
+    form = DrillForm()
 
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -18,20 +18,24 @@ def xword_drill(request, clue_id=None):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             if form.cleaned_data['answer'].upper() == clue.entry.entry_text:
-                return redirect('xword-answer', clue.pk)
+                return redirect('xword-answer', clue.id)
             else:
                 message = "Sorry, that was not correct."
-                return redirect('xword-drill', clue.pk)
+                return render(request, 'xword-drill.html', {
+                    'form':form, 
+                    'clue':clue, 
+                    'clue_id': clue.id, 
+                    'message':'Sorry, that is not correct.'})
     else:
-        form=DrillForm()
-    return render(request, 'xword-drill.html', {'form': form, 'clue':clue})
+        form = DrillForm()
+    return render(request, 'xword-drill.html', {'form': form, 'clue':clue, "clue_id":clue.id})
 
 def get_clue(clue_id):
     """Checks if there is a clue_id, if not, gets a random clue"""
     if not clue_id:
-        pks = Clue.objects.values_list('id', flat=True)
-        clue_id = int(choice(pks))
-    clue=Clue.objects.get(pk=clue_id)
+        ids = Clue.objects.values_list('id', flat=True)
+        clue_id = int(choice(ids))
+    clue = Clue.objects.get(id=clue_id)
     return clue
 
 def xword_answer(request, clue_id):
@@ -41,7 +45,7 @@ def xword_answer(request, clue_id):
 
 def check_only(clue_id):
     """Checks to see if clue is unique"""
-    clue = Clue.objects.get(pk=clue_id)
+    clue = Clue.objects.get(id=clue_id)
     clue_text = clue.clue_text
     clue_list = Clue.objects.filter(clue_text=clue_text)
     clue_dict = {
