@@ -10,16 +10,22 @@ def xword_drill(request):
 
     pks = Clue.objects.values_list('pk', flat=True)
     clue_id = choice(pks)
-    clue = Clue.objects.get(pk=clue_id)
+    current_clue = Clue.objects.get(pk=clue_id)
     form = DrillForm(request.GET)
 
-    if form.is_valid():
-        if form.cleaned_data.answer.upper() == clue.entry.entry_text:
-            return redirect('user-landing', user_identifier = user_identifier)
-        else:
-            return render (request, 'xword-drill.html', {'form':form})
-    # if no valid user_identifier in GET, just display the form
-    else: 
-        return render (request, 'xword-drill.html', {'form': form})
-    # If everything else fails, just render the form.
-    return render (request, 'xword-drill.html', {'form':form})
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = DrillForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = DrillForm()
+        clue = current_clue
+
+    return render(request, 'xword-drill.html', {'form': form, 'clue':clue})

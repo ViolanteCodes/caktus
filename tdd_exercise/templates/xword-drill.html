@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-      HA
+
+{% block clue %}
+<div>
+    <p>{{clue.clue_text}}</p>
+</div>
+{% endblock %}
+
+{% block form %}
+<form action="/your-name/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
+
 {% endblock %}
