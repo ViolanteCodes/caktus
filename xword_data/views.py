@@ -10,7 +10,7 @@ def xword_drill(request):
 
     pks = Clue.objects.values_list('pk', flat=True)
     clue_id = choice(pks)
-    current_clue = Clue.objects.get(pk=clue_id)
+    clue = Clue.objects.get(pk=clue_id)
     form = DrillForm(request.GET)
 
     if request.method == 'POST':
@@ -26,6 +26,5 @@ def xword_drill(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = DrillForm()
-        clue = current_clue
 
     return render(request, 'xword-drill.html', {'form': form, 'clue':clue})
