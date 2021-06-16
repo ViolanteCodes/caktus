@@ -5,10 +5,11 @@ from random import choice
 
 # Create your views here.
 
-def xword_drill(request, clue_id=''):
+def xword_drill(request, clue_id=None):
     """Drill View"""
     # call get_clue function
     clue = get_clue(clue_id)
+    form=DrillForm()
 
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -20,16 +21,16 @@ def xword_drill(request, clue_id=''):
                 return redirect('xword-answer', clue.pk)
             else:
                 message = "Sorry, that was not correct."
-                return redirect('xword-drill', clue_id=clue.pk)
+                return redirect('xword-drill', clue.pk)
     else:
         form=DrillForm()
     return render(request, 'xword-drill.html', {'form': form, 'clue':clue})
 
 def get_clue(clue_id):
     """Checks if there is a clue_id, if not, gets a random clue"""
-    if clue_id == '':
-        pks = Clue.objects.values_list('pk', flat=True)
-        clue_id = choice(pks)
+    if not clue_id:
+        pks = Clue.objects.values_list('id', flat=True)
+        clue_id = int(choice(pks))
     clue=Clue.objects.get(pk=clue_id)
     return clue
 
